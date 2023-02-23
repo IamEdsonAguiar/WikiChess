@@ -1,0 +1,75 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title> WikiChess: {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sh384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <link href="{% static 'encyclopedia/styles.css' %}" rel="stylesheet">
+
+    </head>
+    <body>
+        <div class="row">
+            <div class="sidebar col-lg-2 col-md-3" style="background-color:black; height: 130vh;">
+                <h2 style="color:white">WikiChess</h2>
+                <form action="{% url 'search' %}" method="post" style="border:1px solid white">
+                    {% csrf_token %}
+                    {{ search_form }}
+                </form>
+                <div>
+                    <a href="{% url 'index' %}" style="color:white">Home</a>
+                </div>
+                <div>
+                 <a href="{% url 'create' %}" style="color:white"> Create New Page </a>
+                </div>
+                <div>
+                 <a href="{% url 'random_title' %}" style="color:white"> Random Page</a>
+                </div>
+                  {% block nav %}
+                  {% endblock %}
+            </div>
+            <div class="main col-lg-10 col-md-9">
+                {% if messages %}
+                   <div class="messages">
+                {% for message in messages %}
+
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                         <strong>{{message}}</strong>
+
+                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          
+                         <span aria-hidden="true">&times;</span>
+
+                         </button>
+                     </div>
+                     {% endif %}
+
+                     {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCESS %}
+                       <div class="alert alert-sucess alert-dismissible fade show" role="alert">
+                           {{ message }}
+                       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    
+                        <span aria-hidden="true">&times;</span>
+
+                       </button>
+                      </div>
+                     {% endif %}
+                 {% endfor %}
+                    </div>
+                {% endif %}
+
+
+                {% block body %}
+                {% endblock %}
+                      
+
+        </div>
+    </div>
+
+  </body>
+</html>
